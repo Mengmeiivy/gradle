@@ -225,7 +225,7 @@ public class JUnitXmlResultWriter {
             case SUCCESS:
                 return Collections.singleton(success(classId, methodResult.getId()));
             case ASSUMPTION_FAILURE:
-                // TODO(ivy): pass in real exception from the method result, see failure case above.
+                // TODO(ivychen): pass in real exception from the method result, see failure case above.
                 return Collections.singleton(skipped(classId, methodResult.getId(), "OMGSoGOOD"));
             default:
                 throw new IllegalStateException("Unexpected result type: " + methodResult.getResultType());
