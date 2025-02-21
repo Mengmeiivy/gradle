@@ -22,7 +22,6 @@ import org.gradle.api.internal.tasks.testing.results.serializable.SerializableFa
 import org.gradle.api.tasks.testing.TestOutputEvent;
 import org.gradle.api.tasks.testing.TestResult;
 import org.gradle.internal.UncheckedException;
-import org.gradle.internal.xml.SimpleMarkupWriter;
 import org.gradle.internal.xml.SimpleXmlWriter;
 
 import java.io.IOException;
@@ -225,8 +224,7 @@ public class JUnitXmlResultWriter {
             case SUCCESS:
                 return Collections.singleton(success(classId, methodResult.getId()));
             case ASSUMPTION_FAILURE:
-                // TODO(ivychen): pass in real exception from the method result, see failure case above.
-                return Collections.singleton(skipped(classId, methodResult.getId(), "OMGSoGOOD"));
+                return Collections.singleton(skipped(classId, methodResult.getId(), methodResult.getAssumptionViolationStackTrace()));
             default:
                 throw new IllegalStateException("Unexpected result type: " + methodResult.getResultType());
         }
@@ -317,9 +315,9 @@ public class JUnitXmlResultWriter {
         @Override
         public void write(SimpleXmlWriter writer) throws IOException {
             writer.startElement("skipped");
-            if (message != null)
-                // TODO(ivy): print the exception
+            if (message != null) {
                 writer.write(message);
+            }
             writer.endElement();
             writeOutput(writer);
         }

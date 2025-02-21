@@ -62,7 +62,7 @@ public class TestClassResult {
         if (methodResult.getResultType() == TestResult.ResultType.FAILURE) {
             failuresCount++;
         }
-        if(methodResult.getResultType() == TestResult.ResultType.SKIPPED) {
+        if(methodResult.getResultType() == TestResult.ResultType.SKIPPED || methodResult.getResultType() == TestResult.ResultType.ASSUMPTION_FAILURE) {
             skippedCount++;
         }
         methodResults.add(methodResult);

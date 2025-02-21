@@ -48,4 +48,10 @@ public interface TestResultProcessor {
      */
     @UsedByScanPlugin("test-distribution")
     void failure(Object testId, TestFailure result);
+
+    /**
+     * Notifies this processor that an assumption failure has occurred in the given test.
+     */
+    @UsedByScanPlugin("test-distribution")
+    void assumptionFailure(Object testId, Throwable exception);
 }

@@ -118,10 +118,33 @@ public class JUnitTestEventAdapter extends RunListener {
 
     @Override
     public void testAssumptionFailure(Failure failure) {
+        // similar code block to testFailure() - to be refactored, see differences with comment "// DIFFERENCE"
+        TestDescriptorInternal testInternal;
         synchronized (lock) {
-            // TODO(ivy): Keep track of the failure.getException() similar to testFailure
+            testInternal = executing.get(failure.getDescription());
             assumptionFailed.add(failure.getDescription());
         }
+
+        if (testInternal != null) {
+            // This is the normal path, we've just seen a test failure
+            // for a test that we saw start
+            Throwable exception = failure.getException();
+            // DIFFERENCE
+            reportAssumptionFailure(testInternal.getId(), exception);
+        } else {
+            // This can happen when, for example, a @BeforeClass or @AfterClass method fails
+            // We generate an artificial start/failure/completed sequence of events
+            testInternal = nullSafeDescriptor(idGenerator.generateId(), failure.getDescription());
+            resultProcessor.started(testInternal, startEvent());
+            Throwable exception = failure.getException();
+            // DIFFERENCE
+            reportAssumptionFailure(testInternal.getId(), exception);
+            resultProcessor.completed(testInternal.getId(), new TestCompleteEvent(clock.getCurrentTime()));
+        }
+    }
+
+    private void reportAssumptionFailure(Object descriptorId, Throwable throwable) {
+        resultProcessor.assumptionFailure(descriptorId, throwable);
     }
 
     @Override
@@ -159,7 +182,6 @@ public class JUnitTestEventAdapter extends RunListener {
             assert testInternal != null : String.format("Unexpected end event for %s", description);
             resultType = assumptionFailed.remove(description) ? TestResult.ResultType.ASSUMPTION_FAILURE : null;
         }
-        // TODO(ivy): pass along the exception (see how failures do it)
         resultProcessor.completed(testInternal.getId(), new TestCompleteEvent(endTime, resultType));
     }
 

@@ -99,6 +99,11 @@ public class TestClassExecutionEventGenerator implements TestResultProcessor, Te
         resultProcessor.failure(testId, result);
     }
 
+    @Override
+    public void assumptionFailure(Object testId, Throwable exception) {
+        resultProcessor.assumptionFailure(testId, exception);
+    }
+
     //Extract class name from the fully qualified class name
     private static String classDisplayName(String className) {
         int lastDot = className.lastIndexOf('.');

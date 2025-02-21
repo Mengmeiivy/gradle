@@ -48,6 +48,11 @@ public class AttachParentTestResultProcessor implements TestResultProcessor {
     }
 
     @Override
+    public void assumptionFailure(Object testId, Throwable exception) {
+        processor.assumptionFailure(testId, exception);
+    }
+
+    @Override
     public void output(Object testId, TestOutputEvent event) {
         processor.output(testId, event);
     }

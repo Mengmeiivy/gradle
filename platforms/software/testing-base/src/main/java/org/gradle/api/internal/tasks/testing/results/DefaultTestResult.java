@@ -26,6 +26,7 @@ import java.util.List;
 
 public class DefaultTestResult implements TestResult, Serializable {
     private final List<TestFailure> failures;
+    private final Throwable assumptionFailure;
     private final ResultType resultType;
     private final long startTime;
     private final long endTime;
@@ -34,11 +35,11 @@ public class DefaultTestResult implements TestResult, Serializable {
     private final long failedCount;
 
     public DefaultTestResult(TestState state) {
-        this(state.resultType, state.getStartTime(), state.getEndTime(), state.testCount, state.successfulCount, state.failedCount, state.failures);
+        this(state.resultType, state.getStartTime(), state.getEndTime(), state.testCount, state.successfulCount, state.failedCount, state.failures, state.assumptionFailure);
     }
 
     // TODO(ivy): also pass in the assumption failure exceptions list
-    public DefaultTestResult(ResultType resultType, long startTime, long endTime, long testCount, long successfulCount, long failedCount, List<TestFailure> failures) {
+    public DefaultTestResult(ResultType resultType, long startTime, long endTime, long testCount, long successfulCount, long failedCount, List<TestFailure> failures, Throwable assumptionFailure) {
         this.resultType = resultType;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -46,7 +47,7 @@ public class DefaultTestResult implements TestResult, Serializable {
         this.successfulCount = successfulCount;
         this.failedCount = failedCount;
         this.failures = failures;
-        // TODO(ivy): set them
+        this.assumptionFailure = assumptionFailure;
     }
 
     @Override
@@ -57,6 +58,11 @@ public class DefaultTestResult implements TestResult, Serializable {
     @Override
     public Throwable getException() {
         return failures.isEmpty() ? null : failures.get(0).getRawFailure();
+    }
+
+    @Override
+    public Throwable getAssumptionFailure() {
+        return assumptionFailure;
     }
 
     @Override
@@ -73,8 +79,6 @@ public class DefaultTestResult implements TestResult, Serializable {
     public List<TestFailure> getFailures() {
         return failures;
     }
-
-    // TODO(ivy): implement getAssumptionFailures
 
     @Override
     public long getStartTime() {

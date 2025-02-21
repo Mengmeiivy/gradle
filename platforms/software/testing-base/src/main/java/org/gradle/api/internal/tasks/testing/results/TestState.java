@@ -32,6 +32,7 @@ public class TestState {
     private final Map<Object, TestState> executing;
     public boolean failedChild;
     public List<TestFailure> failures = new ArrayList<TestFailure>();
+    public Throwable assumptionFailure = null;
     public long testCount;
     public long successfulCount;
     public long failedCount;

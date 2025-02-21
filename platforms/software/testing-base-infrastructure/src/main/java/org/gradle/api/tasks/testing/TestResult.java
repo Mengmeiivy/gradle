@@ -69,6 +69,9 @@ public interface TestResult {
     // TODO(ivy): Add a method getAssumptionFailures() and all of the classes that implement
     // only junit will have the implementation.
 
+    @Nullable
+    Throwable getAssumptionFailure();
+
     /**
      * Returns the time when this test started execution.
      *

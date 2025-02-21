@@ -95,4 +95,9 @@ public class CaptureTestOutputTestResultProcessor implements TestResultProcessor
     public void failure(Object testId, TestFailure result) {
         processor.failure(testId, result);
     }
+
+    @Override
+    public void assumptionFailure(Object testId, Throwable exception) {
+        processor.assumptionFailure(testId, exception);
+    }
 }

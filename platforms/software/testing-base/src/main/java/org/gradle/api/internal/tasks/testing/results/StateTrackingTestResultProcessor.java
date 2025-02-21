@@ -109,6 +109,17 @@ public class StateTrackingTestResultProcessor implements TestResultProcessor {
     }
 
     @Override
+    public final void assumptionFailure(Object testId, Throwable exception) {
+        TestState testState = executing.get(testId);
+        if (testState == null) {
+            throw new IllegalArgumentException(String.format(
+                "Received an assumption failure event for test with unknown id '%s'. Registered test ids: '%s'",
+                testId, executing.keySet()));
+        }
+        testState.assumptionFailure = exception;
+    }
+
+    @Override
     public final void output(Object testId, TestOutputEvent event) {
         listener.output(findDescriptor(testId), event);
     }

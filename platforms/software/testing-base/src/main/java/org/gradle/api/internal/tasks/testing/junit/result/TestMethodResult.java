@@ -31,6 +31,8 @@ public class TestMethodResult {
     private long endTime;
     private final List<SerializableFailure> failures = new ArrayList<SerializableFailure>();
 
+    private String assumptionViolationStackTrace = null;
+
     public TestMethodResult(long id, String name) {
         this(id, name, name);
     }
@@ -69,6 +71,10 @@ public class TestMethodResult {
         return this;
     }
 
+    public void setAssumptionViolationStackTrace(String stackTrace) {
+        this.assumptionViolationStackTrace = stackTrace;
+    }
+
     public long getId() {
         return id;
     }
@@ -83,6 +89,10 @@ public class TestMethodResult {
 
     public List<SerializableFailure> getFailures() {
         return failures;
+    }
+
+    public String getAssumptionViolationStackTrace() {
+        return assumptionViolationStackTrace;
     }
 
     public TestResult.ResultType getResultType() {

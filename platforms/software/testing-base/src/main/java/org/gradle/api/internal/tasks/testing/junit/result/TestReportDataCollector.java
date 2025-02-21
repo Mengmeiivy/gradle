@@ -82,6 +82,7 @@ public class TestReportDataCollector implements TestListener, TestOutputListener
                 }
 
                 TestMethodResult methodResult = new TestMethodResult(internalIdCounter++, suite.getName());
+                methodResult.setAssumptionViolationStackTrace(stackTrace(result.getAssumptionFailure()));
                 methodResult.completed(result);
                 classResult.add(methodResult);
             }
@@ -103,6 +104,8 @@ public class TestReportDataCollector implements TestListener, TestOutputListener
         for (Throwable throwable : result.getExceptions()) {
             methodResult.addFailure(failureMessage(throwable), stackTrace(throwable), exceptionClassName(throwable));
         }
+        methodResult.setAssumptionViolationStackTrace(stackTrace(result.getAssumptionFailure()));
+
         TestClassResult classResult = results.get(className);
         if (classResult == null) {
             classResult = new TestClassResult(internalIdCounter++, className, classDisplayName, result.getStartTime());
