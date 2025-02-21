@@ -35,8 +35,9 @@ public enum TestLogEvent {
      */
     SKIPPED,
 
+
     /**
-     * TODO
+     * A test has thrown an assumption violation exception.
      */
     ASSUMPTION_FAILURE,
 

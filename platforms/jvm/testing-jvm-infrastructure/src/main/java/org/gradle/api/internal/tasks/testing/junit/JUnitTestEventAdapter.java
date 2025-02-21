@@ -69,7 +69,6 @@ public class JUnitTestEventAdapter extends RunListener {
     private final Clock clock;
     private final Object lock = new Object();
     private final Map<Description, TestDescriptorInternal> executing = new HashMap<Description, TestDescriptorInternal>();
-    // TODO(ivy): keep the exceptions for the assumptions failures too
     private final Set<Description> assumptionFailed = new HashSet<Description>();
 
     public JUnitTestEventAdapter(TestResultProcessor resultProcessor, Clock clock, IdGenerator<?> idGenerator) {

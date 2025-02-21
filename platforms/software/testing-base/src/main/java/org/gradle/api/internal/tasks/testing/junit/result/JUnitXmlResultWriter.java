@@ -301,7 +301,6 @@ public class JUnitXmlResultWriter {
 
 
     private static class TestCaseExecutionSkipped extends TestCaseExecution {
-        // TODO(ivy): store the exception as nullable so we can write it out as the content of the <skip> element
         private final String message;
         TestCaseExecutionSkipped(
             OutputProvider outputProvider,
@@ -371,7 +370,6 @@ public class JUnitXmlResultWriter {
         return new TestCaseExecutionSuccess(outputProvider(classId, id), options);
     }
 
-    // TODO(ivy): pass in the exception instead of message
     private TestCaseExecution skipped(long classId, long id, String message) {
         return new TestCaseExecutionSkipped(outputProvider(classId, id), options, message);
     }
